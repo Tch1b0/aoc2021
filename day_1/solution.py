@@ -8,7 +8,7 @@ def get_input() -> list[int]:
     
     return [int(x) for x in txt.split()]
 
-def output(string1: str, string2: str = "None") -> None:
+def output(string1: str = "None", string2: str = "None") -> None:
     """
     Write the solution to both parts into the output file
     """
