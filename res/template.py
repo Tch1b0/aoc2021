@@ -7,13 +7,18 @@ def get_input() -> str:
     return txt
 
 # write the solution to the output file
-def output(string: str) -> None:
-    with open("{{ROOT}}", "w") as f:
-        f.write(string)
+def output(string1: str = "None", string2: str = "None") -> None:
+    with open("{{ROOT}}/output.txt", "w") as f:
+        f.write(f"Part 1:\n{string1}\n=========\nPart 2:\n{string2}")
 
-def main():
-    # Solution goes here
+def part1():
+    pass
+
+def part2():
     pass
 
 if __name__ == "__main__":
-    main()
+    output(
+        part1(),
+        part2()
+    )
