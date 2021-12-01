@@ -15,10 +15,10 @@ def output(string1: str = "None", string2: str = "None") -> None:
     with open("{{ROOT}}/output.txt", "w") as f:
         f.write(f"Part 1:\n{string1}\n=========\nPart 2:\n{string2}")
 
-def part1():
+def part1() -> str:
     pass
 
-def part2():
+def part2() -> str:
     pass
 
 if __name__ == "__main__":

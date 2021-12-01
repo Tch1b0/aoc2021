@@ -15,6 +15,8 @@ def output(string1: str = "None", string2: str = "None") -> None:
     with open("day_1/output.txt", "w") as f:
         f.write(f"Part 1:\n{string1}\n=========\nPart 2:\n{string2}")
 
+
+
 def part1(nums: list[int]) -> str:
     recent_depth = 0
     increments = 0
@@ -22,15 +24,13 @@ def part1(nums: list[int]) -> str:
         if depth > recent_depth and recent_depth > 0:
             increments += 1
         recent_depth = depth
-    
+
     return str(increments)
 
 def part2(nums: list[int]) -> str:
-    new_nums: list[int] = []
-    for i in range(0, len(nums) - 2):
-        new_nums.append(nums[i] + nums[i+1] + nums[i+2])
-
-    return part1(new_nums)
+    # Execute the `part1` function with
+    # a generated array of summed depths
+    return part1([nums[i] + nums[i + 1] + nums[i + 2] for i in range(len(nums) - 2)])
 
 if __name__ == "__main__":
     output(
