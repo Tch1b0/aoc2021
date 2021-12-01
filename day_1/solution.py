@@ -1,13 +1,17 @@
-# returns the puzzle input
 def get_input() -> list[int]:
+    """
+    Returns the input of the input.txt file
+    """
     txt = ""
     with open("day_1/input.txt", "r") as f:
         txt = f.read()
     
     return [int(x) for x in txt.split()]
 
-# write the solution to the output file
 def output(string1: str, string2: str = "None") -> None:
+    """
+    Write the solution to both parts into the output file
+    """
     with open("day_1/output.txt", "w") as f:
         f.write(f"Part 1:\n{string1}\n=========\nPart 2:\n{string2}")
 
