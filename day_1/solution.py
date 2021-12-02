@@ -30,7 +30,7 @@ def part1(nums: list[int]) -> str:
 def part2(nums: list[int]) -> str:
     # Execute the `part1` function with
     # a generated array of summed depths
-    return part1([nums[i] + nums[i + 1] + nums[i + 2] for i in range(len(nums) - 2)])
+    return part1([sum(nums[i:i+3]) for i in range(len(nums) - 2)])
 
 if __name__ == "__main__":
     output(
