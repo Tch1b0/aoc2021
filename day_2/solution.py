@@ -1,6 +1,3 @@
-from typing import Match
-
-
 def get_input() -> str:
     """
     Returns the input of the input.txt file
