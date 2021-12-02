@@ -23,12 +23,13 @@ def part1(commands: list[str]) -> str:
     h = 0
     for command in commands:
         command = command.split()
-        if command[0] == "forward":
-            h += int(command[1])
-        elif command[0] == "up":
-            depth -= int(command[1])
-        elif command[0] == "down":
-            depth += int(command[1])
+        match command[0]:
+            case "forward":
+                h += int(command[1])
+            case "up":
+                depth -= int(command[1])
+            case "down":
+                depth += int(command[1])
     
     return depth * h
 
@@ -38,13 +39,14 @@ def part2(commands: list[str]) -> str:
     aim = 0
     for command in commands:
         command = command.split()
-        if command[0] == "forward":
-            h += int(command[1])
-            depth += aim * int(command[1])
-        elif command[0] == "up":
-            aim -= int(command[1])
-        elif command[0] == "down":
-            aim += int(command[1])
+        match command[0]:
+            case "forward":
+                h += int(command[1])
+                depth += aim * int(command[1])
+            case "up":
+                aim -= int(command[1])
+            case "down":
+                aim += int(command[1])
     
     return depth * h
 
