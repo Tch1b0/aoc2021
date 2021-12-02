@@ -1,4 +1,5 @@
 require "option_parser"
+require "./utility"
 
 day : Int32 = 0
 language : String = "rb"
