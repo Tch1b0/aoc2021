@@ -1,4 +1,5 @@
 # Day 3
+#### [Task](https://adventofcode.com/2021/day/3)
 ## Code
 ```py
 def part1(bits: list[str]) -> str:
