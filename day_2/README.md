@@ -2,7 +2,7 @@
 ### [Task](https://adventofcode.com/2021/day/2)
 ## Code
 ```py
-def part1(commands: list[str]) -> str:
+def part1(commands: list[str]) -> int:
     depth = 0
     h = 0
     for command in commands:
