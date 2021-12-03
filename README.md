@@ -6,7 +6,7 @@
 
 ## aoc-helper
 
-Usage: `aoc [arguments]`
+Usage: `aoc [subcommand] [arguments]`
 
 - `-h`, `--help` Show help
 - `-l [LANG]`, `--lang=[LANG]` Set the language you want to use
