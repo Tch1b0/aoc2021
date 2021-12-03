@@ -17,7 +17,7 @@ def part1(commands: list[str]) -> int:
     
     return depth * h
 
-def part2(commands: list[str]) -> str:
+def part2(commands: list[str]) -> int:
     depth = 0
     h = 0
     aim = 0
