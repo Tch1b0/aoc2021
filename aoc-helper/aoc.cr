@@ -1,4 +1,5 @@
 require "option_parser"
+require "./puzzle"
 require "./utility"
 
 day : Int32 = 0
@@ -33,8 +34,8 @@ OptionParser.parse do |parser|
 
   parser.on "gen-doc", "Generate a README for every AOC-day" do
     count = 0
-    get_puzzles.each do |day|
-      day.create_readme generate_readme(day)
+    get_puzzles.each do |puzzle|
+      puzzle.create_readme generate_readme(puzzle)
       count += 1
     end
     puts "Generated #{count} README's"

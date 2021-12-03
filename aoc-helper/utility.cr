@@ -1,16 +1,16 @@
-require "./day"
+require "./puzzle"
 
 def get_puzzles
   dirs = Dir.children(".").select(/^day_/)
-  days = [] of Day
+  days = [] of Puzzle
   dirs.each do |dir|
-    days.push(Day.new(dir, "py"))
+    days.push(Puzzle.new(dir, "py"))
   end
   days
 end
 
-def get_python_code(day : Day) : String
-  input = day.solution.split "\n"
+def get_python_code(puzzle : Puzzle) : String
+  input = puzzle.solution.split "\n"
   i = 0
   beginning = 0
   ending = 0
@@ -25,10 +25,10 @@ def get_python_code(day : Day) : String
   input[beginning..ending].join "\n"
 end
 
-def generate_readme(day : Day)
-  readme = "# Day #{day.day}\n"
-  readme += "### [Task](https://adventofcode.com/2021/day/#{day.day})\n"
-  readme += "## Code\n```#{day.filetype}\n#{get_python_code(day)}\n```\n"
-  readme += "## Input\n```\n#{day.readable_input}\n```\n"
-  readme += "## Output\n```\n#{day.output}\n```"
+def generate_readme(puzzle : Puzzle)
+  readme = "# Day #{puzzle.day}\n"
+  readme += "### [Task](https://adventofcode.com/2021/day/#{puzzle.day})\n"
+  readme += "## Code\n```#{puzzle.filetype}\n#{get_python_code(puzzle)}\n```\n"
+  readme += "## Input\n```\n#{puzzle.readable_input}\n```\n"
+  readme += "## Output\n```\n#{puzzle.output}\n```"
 end
