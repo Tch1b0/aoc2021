@@ -17,7 +17,7 @@ def output(string1: str = "None", string2: str = "None") -> None:
 
 def part1(bits: list[str]) -> str:
     gamma_rate = ""
-    for i in range(0, len(bits[0]) - 1):
+    for i in range(0, len(bits[0])):
         current_bit = [bit[i] for bit in bits]
         if current_bit.count("1") > current_bit.count("0"):
             gamma_rate += "1"
