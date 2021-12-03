@@ -15,7 +15,7 @@ def output(string1: str = "None", string2: str = "None") -> None:
     with open("day_2/output.txt", "w") as f:
         f.write(f"Part 1:\n{string1}\n=========\nPart 2:\n{string2}")
 
-def part1(commands: list[str]) -> str:
+def part1(commands: list[str]) -> int:
     depth = 0
     h = 0
     for command in commands:
