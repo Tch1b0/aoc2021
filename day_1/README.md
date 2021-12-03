@@ -2,7 +2,7 @@
 ### [Task](https://adventofcode.com/2021/day/1)
 ## Code
 ```py
-def part1(nums: list[int]) -> str:
+def part1(nums: list[int]) -> int:
     recent_depth = 0
     increments = 0
     for depth in nums:
@@ -10,9 +10,9 @@ def part1(nums: list[int]) -> str:
             increments += 1
         recent_depth = depth
 
-    return str(increments)
+    return increments
 
-def part2(nums: list[int]) -> str:
+def part2(nums: list[int]) -> int:
     # Execute the `part1` function with
     # a generated array of summed depths
     return part1([sum(nums[i:i+3]) for i in range(len(nums) - 2)])

@@ -2,7 +2,7 @@
 ### [Task](https://adventofcode.com/2021/day/3)
 ## Code
 ```py
-def part1(bits: list[str]) -> str:
+def part1(bits: list[str]) -> int:
     gamma_rate = ""
     for i in range(0, len(bits[0])):
         bit_parts = [bit[i] for bit in bits]
@@ -12,7 +12,7 @@ def part1(bits: list[str]) -> str:
             gamma_rate += "0"
     return int(gamma_rate, 2) * int(gamma_rate.replace("1","!").replace("0","1").replace("!","0"), 2)
 
-def part2(all_bits: list[str]) -> str:
+def part2(all_bits: list[str]) -> int:
     bits = all_bits.copy()
 
     for i in range(0, len(bits[0])):
