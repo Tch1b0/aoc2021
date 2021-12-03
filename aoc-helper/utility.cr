@@ -1,7 +1,12 @@
 require "./day"
 
-def get_puzzle_dirs
-  Dir.children(".").select(/^day_/)
+def get_puzzles
+  dirs = Dir.children(".").select(/^day_/)
+  days = [] of Day
+  dirs.each do |dir|
+    days.push(Day.new(dir, "py"))
+  end
+  days
 end
 
 def get_python_code(day : Day) : String
@@ -10,25 +15,19 @@ def get_python_code(day : Day) : String
   beginning = 0
   ending = 0
   input.each do |line|
-    if line.includes? "def part1"
-      puts i
+    if line =~ /def part1/
       beginning = i
-    elsif line.includes? "if __main__"
-      puts i
+    elsif line =~ /if __name__/
       ending = i - 1
     end
     i += 1
   end
-  puts beginning, ending
   input[beginning..ending].join "\n"
 end
 
 def generate_readme(day : Day)
-  readme = "# Day 1" # {day.day}"
+  readme = "# Day #{day.day}\n"
   readme += "## Code\n```#{day.filetype}\n#{get_python_code(day)}\n```\n"
-  readme += "## Input\n```\n#{day.readable_input}\n```"
+  readme += "## Input\n```\n#{day.readable_input}\n```\n"
   readme += "## Output\n```\n#{day.output}\n```"
 end
-
-s = Day.new "day_1", "py"
-puts generate_readme(s)
