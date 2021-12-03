@@ -1,5 +1,5 @@
 # Day 1
-#### [Task](https://adventofcode.com/2021/day/1)
+### [Task](https://adventofcode.com/2021/day/1)
 ## Code
 ```py
 def part1(nums: list[int]) -> str:

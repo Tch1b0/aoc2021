@@ -27,7 +27,7 @@ end
 
 def generate_readme(day : Day)
   readme = "# Day #{day.day}\n"
-  readme += "#### [Task](https://adventofcode.com/2021/day/#{day.day})\n"
+  readme += "### [Task](https://adventofcode.com/2021/day/#{day.day})\n"
   readme += "## Code\n```#{day.filetype}\n#{get_python_code(day)}\n```\n"
   readme += "## Input\n```\n#{day.readable_input}\n```\n"
   readme += "## Output\n```\n#{day.output}\n```"
