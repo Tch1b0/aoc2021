@@ -1,4 +1,5 @@
 require "option_parser"
+require "./utility"
 
 day : Int32 = 0
 language : String = "rb"
@@ -29,6 +30,16 @@ OptionParser.parse do |parser|
     day = selected_day
   end
   parser.on "-nt", "--no-template", "Don't generate a template" { generate_template = false }
+
+  parser.on "gen-doc", "Generate a README for every AOC-day" do
+    count = 0
+    get_puzzles.each do |day|
+      day.create_readme generate_readme(day)
+      count += 1
+    end
+    puts "Generated #{count} README's"
+    exit
+  end
 end
 
 # Execute the command
