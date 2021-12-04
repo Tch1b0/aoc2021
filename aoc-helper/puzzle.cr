@@ -23,7 +23,9 @@ class Puzzle
     input.join "\n"
   end
 
-  def create_readme(content : String)
-    File.write "#{@dir_name}/README.md", content
+  def create_file(name : String, content : String)
+    if !File.exists?("#{@dir_name}/#{name}")
+      File.write "#{@dir_name}/#{name}", content
+    end
   end
 end

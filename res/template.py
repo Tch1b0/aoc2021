@@ -1,9 +1,9 @@
-def get_input() -> str:
+def get_input(example: bool = False) -> str:
     """
     Returns the input of the input.txt file
     """
     txt = ""
-    with open("{{ROOT}}/input.txt", "r") as f:
+    with open(f"{{ROOT}}/{'example_' if example else ''}input.txt", "r") as f:
         txt = f.read()
     
     return txt

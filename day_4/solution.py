@@ -1,14 +1,30 @@
 from copy import deepcopy
 
-def get_input() -> str:
+def get_input(example: bool = False) -> list[str]:
     """
     Returns the input of the input.txt file
     """
-    txt = ""
-    with open("day_4/input.txt", "r") as f:
-        txt = f.readlines()
+    inp = ""
+    with open(f"day_4/{'example_' if example else ''}input.txt", "r") as f:
+        inp = f.readlines()
     
-    return txt
+    bingo_numbers: list[str] = inp[0].replace("\n","").split(",")
+    bingo_fields: list[BingoField] = []
+    
+    for i in range(2, len(inp) - 2, 6):
+        bingo_fields.append(
+            BingoField(
+                [
+                    inp[i].replace("\n","").split(),
+                    inp[i + 1].replace("\n","").split(),
+                    inp[i + 2].replace("\n","").split(),
+                    inp[i + 3].replace("\n","").split(),
+                    inp[i + 4].replace("\n","").split(),
+                ]
+            )
+        )
+
+    return [bingo_numbers, bingo_fields]
 
 def output(string1: str = "None", string2: str = "None") -> None:
     """
@@ -84,22 +100,7 @@ def part2(bingo_numbers: list[str], bingo_fields: list[BingoField]) -> int:
     return last_field_sum_won * last_num_won
 
 if __name__ == "__main__":
-    inp = get_input()
-    bingo_numbers: list[str] = inp[0].replace("\n","").split(",")
-    bingo_fields: list[BingoField] = []
-    
-    for i in range(2, len(inp) - 2, 6):
-        bingo_fields.append(
-            BingoField(
-                [
-                    inp[i].replace("\n","").split(),
-                    inp[i + 1].replace("\n","").split(),
-                    inp[i + 2].replace("\n","").split(),
-                    inp[i + 3].replace("\n","").split(),
-                    inp[i + 4].replace("\n","").split(),
-                ]
-            )
-        )
+    bingo_numbers, bingo_fields = get_input()
 
     output(
         part1(deepcopy(bingo_numbers), deepcopy(bingo_fields)),
