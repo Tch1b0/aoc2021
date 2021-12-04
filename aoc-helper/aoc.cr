@@ -39,13 +39,13 @@ OptionParser.parse do |parser|
     if day == 0
       count = 0
       get_puzzles.each do |puzzle|
-        puzzle.create_readme generate_readme(puzzle)
+        puzzle.create_file "README.md", generate_readme(puzzle)
         count += 1
       end
       puts "Generated #{count} README's"
     else
       puzzle = Puzzle.new "day_#{day}", language
-      puzzle.create_readme generate_readme(puzzle)
+      puzzle.create_file "README.md", generate_readme(puzzle)
       puts "Generated README for Day #{day}"
     end
     exit
@@ -55,9 +55,17 @@ end
 # Execute the command
 
 dir_name = "day_" + day.to_s
-Dir.mkdir dir_name
+if !Dir.exists?(dir_name)
+  Dir.mkdir dir_name
+end
+puzzle = Puzzle.new(dir_name, language)
 if generate_template
-  File.write "#{dir_name}/input.txt", ""
-  File.write "#{dir_name}/output.txt", ""
-  File.write "#{dir_name}/solution.#{language}", File.read("res/template.#{language}").gsub("{{ROOT}}", dir_name)
+  puzzle.create_file "input.txt", ""
+  puzzle.create_file "output.txt", ""
+  puzzle.create_file "solution.#{language}", File.read("res/template.#{language}").gsub("{{ROOT}}", dir_name)
+  if ["py"].includes?(language)
+    puzzle.create_file "test_solution.#{language}", File.read("res/test_template.#{language}").gsub("{{ROOT}}", dir_name)
+    puzzle.create_file "example_input.txt", ""
+    puzzle.create_file "example_output.txt", ""
+  end
 end

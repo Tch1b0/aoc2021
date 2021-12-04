@@ -1,9 +1,9 @@
-def get_input() -> str:
+def get_input(example: bool = False) -> str:
     """
     Returns the input of the input.txt file
     """
     txt = ""
-    with open("day_2/input.txt", "r") as f:
+    with open(f"day_2/{'example_' if example else ''}input.txt", "r") as f:
         txt = f.read()
     
     return txt.split("\n")

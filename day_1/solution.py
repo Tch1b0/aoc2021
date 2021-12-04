@@ -1,9 +1,9 @@
-def get_input() -> list[int]:
+def get_input(example: bool = False) -> list[int]:
     """
     Returns the input of the input.txt file
     """
     txt = ""
-    with open("day_1/input.txt", "r") as f:
+    with open(f"day_1/{'example_' if example else ''}input.txt", "r") as f:
         txt = f.read()
     
     return [int(x) for x in txt.split()]
@@ -14,8 +14,6 @@ def output(string1: str = "None", string2: str = "None") -> None:
     """
     with open("day_1/output.txt", "w") as f:
         f.write(f"Part 1:\n{string1}\n=========\nPart 2:\n{string2}")
-
-
 
 def part1(nums: list[int]) -> int:
     recent_depth = 0
