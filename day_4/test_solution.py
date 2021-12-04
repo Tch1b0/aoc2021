@@ -39,7 +39,7 @@ class TestSolution(unittest.TestCase):
         ).has_won())
 
         for i in range(0, 5):
-            # == [ Test vertically ] ==
+            # == [ Test horizontally ] ==
             field1 = [
                 ["!", "!", "!", "!", "!"],
                 ["!", "!", "!", "!", "!"],
@@ -50,7 +50,7 @@ class TestSolution(unittest.TestCase):
             field1[i] = ["*", "*", "*", "*", "*"]
             self.assertTrue(solution.BingoField(field1).has_won())
 
-            # == [ Test horizontally ] ==
+            # == [ Test vertically ] ==
             field2 = [
                 ["!", "!", "!", "!", "!"],
                 ["!", "!", "!", "!", "!"],
