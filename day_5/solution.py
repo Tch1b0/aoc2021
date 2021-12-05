@@ -15,6 +15,9 @@ class Coordinates():
     def __repr__(self) -> str:
         return str(self)
 
+    def __hash__(self) -> int:
+        return hash((self.x, self.y))
+
     @staticmethod
     def from_string(string: str):
         tmp = [int(x) for x in string.split(",")]
@@ -24,6 +27,8 @@ class Vent():
     def __init__(self, from_coords: Coordinates, to_coords: Coordinates) -> None:
         self.diagonal: bool = False
         self.coords: list[Coordinates] = []
+
+        # Case: Diagonal line
         if from_coords.x != to_coords.x and from_coords.y != to_coords.y: 
             self.diagonal = True
             start, end = (from_coords, to_coords) if from_coords.y < to_coords.y else (to_coords, from_coords)
@@ -32,10 +37,11 @@ class Vent():
             for y in range(start.y, end.y + 1):
                 self.coords.append(Coordinates(x, y))
                 x += increment
-
+        # Case: Horizontal line
         elif from_coords.x != to_coords.x:
             for i in range(min(from_coords.x, to_coords.x), max(from_coords.x, to_coords.x) + 1):
                 self.coords.append(Coordinates(i, from_coords.y))
+        # Case: Vertical line
         else:
             for i in range(min(from_coords.y, to_coords.y), max(from_coords.y, to_coords.y) + 1):
                 self.coords.append(Coordinates(from_coords.x, i))
@@ -65,20 +71,17 @@ class GameField():
         self.vents.append(vent)
 
     def count_overlapping_vents(self, diagonal: bool = False) -> int:
-        field = [[0 for _ in range(0, 1000 + 1)] for _ in range(0, 1000 + 1)]
+        field = {}
         
         for vent in self.vents:
             if vent.diagonal and not diagonal: continue
             for coord in vent.coords:
-                field[coord.y][coord.x] += 1
-        
-        overlapping = 0
-        for row in field:
-            for column in row:
-                if column > 1:
-                    overlapping += 1
-        
-        return overlapping
+                if coord in field.keys():
+                    field[coord] += 1
+                else:
+                    field[coord] = 1
+
+        return len([x for x in field.values() if x > 1])
 
 def get_input(example: bool = False) -> GameField:
     """
