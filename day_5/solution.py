@@ -67,7 +67,7 @@ class GameField():
     def __str__(self) -> str:
         return str(self.vents)
 
-    def plant_mine(self, vent: Vent) -> None:
+    def add_vent(self, vent: Vent) -> None:
         self.vents.append(vent)
 
     def count_overlapping_vents(self, diagonal: bool = False) -> int:
