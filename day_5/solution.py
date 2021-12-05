@@ -71,7 +71,7 @@ class GameField():
         self.vents.append(vent)
 
     def count_overlapping_vents(self, diagonal: bool = False) -> int:
-        field = {}
+        field: dict[Coordinates, int] = {}
         
         for vent in self.vents:
             if vent.diagonal and not diagonal: continue
