@@ -19,7 +19,7 @@ class TestSolution(unittest.TestCase):
             example_output["part1"]
         )
     
-    def _test_part2(self):
+    def test_part2(self):
         self.assertEqual(
             str(solution.part2(solution.get_input(example=True))), 
             example_output["part2"]
