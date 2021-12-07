@@ -41,10 +41,10 @@ def complex_fuel_cost(point1: int, point2: int):
     
     return fuel_cost
 
-def part1(submarines: list[int]) -> str:
+def part1(submarines: list[int]) -> int:
     return most_efficient_ordinate(submarines)
 
-def part2(submarines: list[int]) -> str:
+def part2(submarines: list[int]) -> int:
     return most_efficient_ordinate(submarines, complex=True)
 
 
