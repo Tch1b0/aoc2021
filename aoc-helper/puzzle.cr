@@ -9,9 +9,15 @@ class Puzzle
 
   def initialize(@dir_name : String, @filetype : String)
     @day = @dir_name.delete_at(0..3).to_i
-    @input = File.read "#{@dir_name}/input.txt"
-    @output = File.read "#{@dir_name}/output.txt"
-    @solution = File.read "#{@dir_name}/solution.#{@filetype}"
+    if !Dir.empty? @dir_name
+      @input = File.read "#{@dir_name}/input.txt"
+      @output = File.read "#{@dir_name}/output.txt"
+      @solution = File.read "#{@dir_name}/solution.#{@filetype}"
+    else
+      @input = ""
+      @output = ""
+      @solution = ""
+    end
   end
 
   def readable_input : String
