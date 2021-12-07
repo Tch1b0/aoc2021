@@ -2,10 +2,10 @@
 ### [Task](https://adventofcode.com/2021/day/7)
 ## Code
 ```py
-def part1(submarines: list[int]) -> str:
+def part1(submarines: list[int]) -> int:
     return most_efficient_ordinate(submarines)
 
-def part2(submarines: list[int]) -> str:
+def part2(submarines: list[int]) -> int:
     return most_efficient_ordinate(submarines, complex=True)
 
 
