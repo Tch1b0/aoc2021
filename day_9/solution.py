@@ -1,4 +1,63 @@
+from __future__ import annotations
 from colorama import Fore
+from functools import reduce
+
+class Basin():
+    def __init__(self, points: list[tuple[int, int]] = []) -> None:
+        self.id: int
+        self.points = points
+
+    def add_point(self, point: tuple[int, int]) -> None:
+        self.points.append(point)
+
+    def has_point(self, point: tuple[int, int]) -> bool:
+        return point in self.points
+
+    def move_point(self, other: Basin, point: tuple[int, int]) -> None:
+        self.points.remove(point)
+        other.add_point(point)
+
+    def size(self) -> int:
+        return len(self.points)
+
+    def __gt__(self, other) -> bool:
+        return len(self.points) > len(other)
+    def __lt__(self, other) -> bool:
+        return len(self.points) < len(other)
+    def __len__(self):
+        return len(self.points)
+    def __repr__(self) -> str:
+        return str(self.points)
+
+class BasinCollection():
+    def __init__(self, basins: list[Basin] = []) -> None:
+        self.basins = basins
+    
+    def add_basin(self, basin: Basin):
+        basin.id = len(self.basins)
+        self.basins.append(basin)
+
+    def get_basin_by_point(self, point: tuple[int, int]) -> Basin | None:
+        if len(basin := [x for x in self.basins if x.has_point(point)]) > 0:
+            return basin[0]
+        else:
+            return None
+
+    def get_basin_by_id(self, id: int) -> Basin | None:
+        if len(basin := [x for x in self.basins if x.id == id]) > 0:
+            return basin[0]
+        else:
+            return None
+
+    def sort_basins(self):
+        self.basins = sorted(self.basins, key=len, reverse=True)
+
+    def get_top(self, top_count: int) -> list[Basin]:
+        self.sort_basins()
+        return self.basins[:top_count]
+
+    def get_top_sum(self, top_count: int) -> int:
+        return reduce((lambda a,b: a*b), [x.size() for x in self.get_top(top_count)])
 
 def get_input(example: bool = False) -> str:
     """
@@ -17,7 +76,53 @@ def output(string1: str = "None", string2: str = "None") -> None:
     with open("day_9/output.txt", "w") as f:
         f.write(f"Part 1:\n{string1}\n=========\nPart 2:\n{string2}")
 
-def part1(points: list[list[int]]) -> int:
+def get_close_points(points: list[list[tuple[int, int]]], point: tuple[int, int]) -> list[tuple[int, int]]:
+    close_points: list[tuple[int, int]] = []
+    x, y = point
+    current_point_val = points[y][x]
+
+    CURRENT_POINT_RANGE = (current_point_val - 1, current_point_val + 1)
+    if y > 0 and points[y - 1][x] != 9 and points[y - 1][x] in CURRENT_POINT_RANGE:
+        close_points.append((x, y - 1))
+    if x > 0 and points[y][x - 1] != 9 and points[y][x - 1] in CURRENT_POINT_RANGE:
+        close_points.append((x - 1, y))
+    if x < len(points[y]) - 1 and points[y][x + 1] != 9 and points[y][x + 1] in CURRENT_POINT_RANGE:
+        close_points.append((x + 1, y))
+    if y < len(points) - 1 and points[y + 1][x] != 9 and points[y + 1][x] in CURRENT_POINT_RANGE:
+        close_points.append((x, y + 1))
+
+    return close_points
+
+def smooth(points, basin_collection, visual: bool =True):
+    for row in range(0, len(points)):
+        for col in range(0, len(points[row])):
+            coords: tuple[int, int] = (col, row)
+            current_val: int = points[row][col]
+            if current_val == 9:
+                # if visual: print(Fore.RED, f"{current_val:2d}", end="")
+                continue
+                
+            current_basin: Basin = basin_collection.get_basin_by_point(coords)
+            neighbours = get_close_points(points, coords)
+            for neighbour in neighbours:
+                if current_basin.has_point(neighbour): 
+                    continue
+                elif (basin := basin_collection.get_basin_by_point(neighbour)).id < current_basin.id:
+                    current_basin.move_point(basin, coords)
+                    current_basin = basin
+            
+            for neighbour in neighbours:
+                if current_basin.has_point(neighbour): 
+                    continue
+                else:
+                    basin: Basin = basin_collection.get_basin_by_point(neighbour)
+                    basin.move_point(current_basin, neighbour)
+
+            # if visual: print(Fore.GREEN, f"{current_basin.id:2d}", end="")
+        # if visual: print()
+    # if visual: print(Fore.RESET)
+
+def part1(points: list[list[int]], visual: bool = True) -> int:
     risk_levels = 0
     for row in range(0, len(points)):
         for col in range(0, len(points[row])):
@@ -26,68 +131,50 @@ def part1(points: list[list[int]]) -> int:
                 (col > 0 and points[row][col - 1] <= current_point) or
                 (col < len(points[row]) - 1 and points[row][col + 1] <= current_point) or
                 (row < len(points) - 1 and points[row + 1][col] <= current_point)):
-                print(Fore.RED, current_point, end="")
+                if visual: print(Fore.RED, current_point, end="")
                 continue
             else:
                 risk_levels += current_point + 1
-                print(Fore.GREEN, current_point, end="")
+                if visual: print(Fore.GREEN, current_point, end="")
 
-        print()
-    print(Fore.RESET)
+        if visual: print()
+    if visual: print(Fore.RESET)
 
     return risk_levels
 
-def find_and_append(basins: list[list[tuple[int, int]]], seach_val: tuple[int, int], append_val: tuple[int, int]) -> list[list[tuple[int, int]]]:
-    for basin in basins:
-        if seach_val in basin: 
-            basin.append(append_val)
-            break
-    else:
-        basins.append([append_val])
-    
-    return basins
-
 def part2(points: list[list[int]]) -> int:
-    basins: list[list[tuple[int, int]]] = []
+    basin_collection: BasinCollection = BasinCollection()
+    already_assigned: list[tuple[int, int]] = []
+
+    print()
     for row in range(0, len(points)):
         for col in range(0, len(points[row])):
-            current_point = points[row][col]
-            if current_point == 9:
-                print(Fore.RED, current_point, end="")
+            coords: tuple[int, int] = (col, row)
+            current_val: int = points[row][col]
+
+            if current_val == 9 or coords in already_assigned:
                 continue
-
-            search_val: tuple
-            CURRENT_POINT_RANGE = [current_point - 1, current_point + 1]
-            if row > 0 and points[row - 1][col] in CURRENT_POINT_RANGE:
-                search_val = (col, row - 1)
-            elif col > 0 and points[row][col - 1] in CURRENT_POINT_RANGE:
-                search_val = (col - 1, row)
-            elif col < len(points[row]) - 1 and points[row][col + 1] in CURRENT_POINT_RANGE:
-                search_val = (col + 1, row)
-            elif row < len(points) - 1 and points[row + 1][col] in CURRENT_POINT_RANGE:
-                search_val = (col, row + 1)
+            
+            neighbours = get_close_points(points, coords)
+            for neighbour in neighbours:
+                if (basin := basin_collection.get_basin_by_point(neighbour)) is not None:
+                    basin.add_point(coords)
+                    break
             else:
-                print(Fore.RED, current_point, end="")
+                basin = Basin([coords] + neighbours)
+                basin_collection.add_basin(basin)
+                already_assigned += neighbours
 
-            find_and_append(basins, search_val, (col, row))
-            print(Fore.GREEN, current_point, end="")
-        print()
-
+    print("init for loop", end="\r")
+    for i in range(10):
+        print(Fore.BLUE, f"Iteration: {i}", end="\r")
+        smooth(points, basin_collection, visual=False)
     print(Fore.RESET)
-    print(basins)
-
-    result = 1
-    for _ in range(3):
-        tmp = max(basins, key=len)
-        result *= len(tmp)
-        basins.remove(tmp)
-
-    return result
     
-
+    return basin_collection.get_top_sum(3)
 
 if __name__ == "__main__":
     output(
-        part1(get_input()),
-        part2()
+        part1(get_input(), False),
+        part2(get_input())
     )
