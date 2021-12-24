@@ -1,0 +1,5 @@
+add x 2
+add z 20
+div z x
+mul x 5
+eql x z

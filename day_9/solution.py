@@ -95,11 +95,12 @@ def get_close_points(points: list[list[tuple[int, int]]], point: tuple[int, int]
 
 def smooth(points, basin_collection, visual: bool =True):
     for row in range(0, len(points)):
+        row_points: int = 0
         for col in range(0, len(points[row])):
             coords: tuple[int, int] = (col, row)
             current_val: int = points[row][col]
             if current_val == 9:
-                # if visual: print(Fore.RED, f"{current_val:2d}", end="")
+                if visual: print(Fore.RED, f"{current_val:2d}", end="")
                 continue
                 
             current_basin: Basin = basin_collection.get_basin_by_point(coords)
@@ -118,9 +119,9 @@ def smooth(points, basin_collection, visual: bool =True):
                     basin: Basin = basin_collection.get_basin_by_point(neighbour)
                     basin.move_point(current_basin, neighbour)
 
-            # if visual: print(Fore.GREEN, f"{current_basin.id:2d}", end="")
-        # if visual: print()
-    # if visual: print(Fore.RESET)
+            if visual: print(Fore.GREEN, f"{current_basin.id:2d}", end="")
+        if visual: print()
+    if visual: print(Fore.RESET)
 
 def part1(points: list[list[int]], visual: bool = True) -> int:
     risk_levels = 0
@@ -168,7 +169,7 @@ def part2(points: list[list[int]]) -> int:
     print("init for loop", end="\r")
     for i in range(10):
         print(Fore.BLUE, f"Iteration: {i}", end="\r")
-        smooth(points, basin_collection, visual=False)
+        smooth(points, basin_collection, visual=True)
     print(Fore.RESET)
     
     return basin_collection.get_top_sum(3)

@@ -35,7 +35,7 @@ def bcd_to_int(
     return number_codes.index(segments)
 
 def decrypt_segment(segment: list[str]):
-    pass 
+    pass
 
 def part1(segments: list[list[str]]) -> int:
     p = 0
