@@ -57,6 +57,7 @@ def part1(lines: list[str]) -> int:
 def part2(lines: list[str]) -> int:
     def get_points(s): return {")": 1, "]": 2, "}": 3, ">": 4}[s]
 
+    # Remove invalid lines
     for line in lines.copy():
         brackets = []
         for bracket in line:
@@ -70,6 +71,7 @@ def part2(lines: list[str]) -> int:
 
     scores = []
 
+    # Fill in missing brackets
     for line in lines:
         loc_score = 0
         ignored = []
