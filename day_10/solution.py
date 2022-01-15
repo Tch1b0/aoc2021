@@ -1,6 +1,7 @@
 from typing import Callable
 from colorama import Fore
 
+
 def get_input(example: bool = False) -> list[str]:
     """
     Returns the input of the input.txt file
@@ -8,8 +9,9 @@ def get_input(example: bool = False) -> list[str]:
     txt = ""
     with open(f"day_10/{'example_' if example else ''}input.txt", "r") as f:
         txt = f.readlines()
-    
+
     return [x.replace("\n", "") for x in txt]
+
 
 def output(string1: str = "None", string2: str = "None") -> None:
     """
@@ -18,40 +20,81 @@ def output(string1: str = "None", string2: str = "None") -> None:
     with open("day_10/output.txt", "w") as f:
         f.write(f"Part 1:\n{string1}\n=========\nPart 2:\n{string2}")
 
+
+bracket_pairs = {
+    ")": "(", "]": "[", "}": "{", ">": "<"}
+
+get_opening_bracket: Callable[[str], str] = lambda s: bracket_pairs[s]
+get_closing_brackets: Callable[[str], str] = lambda s: {
+    x[1]: x[0] for x in bracket_pairs.items()}[s]
+
+
 def part1(lines: list[str]) -> int:
-    sum_points = 0
-    get_points: Callable[[str], int] = lambda s: {"(": 3, ")": 3, "[": 57, "]": 57, "{": 1197, "}": 1197, "<": 25137, ">": 25137}[s]
-    get_opening_bracket: Callable[[str], str] = lambda s: {")": "(", "]": "[", "}": "{", ">": "<"}[s]
+    score = 0
+    get_points: Callable[[str], int] = lambda s: {
+        "(": 3, ")": 3, "[": 57, "]": 57, "{": 1197, "}": 1197, "<": 25137, ">": 25137}[s]
 
     for line in lines:
         brackets = []
-        for i in range(0, len(line)):
-            current_bracket = line[i]
-            if current_bracket in ["(", "[", "{", "<"]:
-                brackets.append(current_bracket)
-            elif current_bracket in [")", "]", "}", ">"]:
-                try:
-                    brackets.remove(get_opening_bracket(current_bracket))
-                except:
-                    print(Fore.RED, current_bracket + " ERROR", end="")
-                    sum_points += get_points(current_bracket)
+        for bracket in line:
+            try:
+                opening = get_opening_bracket(bracket)
+                if len(bracket) == 0 or brackets[-1] != opening:
+                    score += get_points(bracket)
+                    print(Fore.RED, bracket, "ERROR", end="")
                     break
-            print(Fore.GREEN, current_bracket, end="")
-        else:
-            if len(brackets) != 0:
-                print(Fore.RED, brackets[-1] + " ERROR", end="")
-                sum_points += get_points(brackets[0])
-
+                else:
+                    brackets.pop()
+            except KeyError:
+                print(Fore.GREEN, bracket, end="")
+                brackets.append(bracket)
         print()
-    
-    print(Fore.RESET)
-    return sum_points
 
-def part2() -> str:
-    pass
+    print(Fore.RESET)
+    return score
+
+
+def part2(lines: list[str]) -> int:
+    def get_points(s): return {")": 1, "]": 2, "}": 3, ">": 4}[s]
+
+    for line in lines.copy():
+        brackets = []
+        for bracket in line:
+            if bracket in bracket_pairs.values():
+                brackets.append(bracket)
+            elif bracket != get_closing_brackets(brackets[-1]):
+                lines.remove(line)
+                break
+            else:
+                brackets.pop()
+
+    scores = []
+
+    for line in lines:
+        loc_score = 0
+        ignored = []
+        print(Fore.BLUE, line, end="")
+        for bracket in line[::-1]:
+            if bracket in bracket_pairs.keys():
+                ignored.append(get_opening_bracket(bracket))
+            elif bracket in ignored:
+                ignored.remove(bracket)
+            else:
+                closing_bracket = get_closing_brackets(bracket)
+                print(Fore.GREEN, closing_bracket, end="")
+                loc_score *= 5
+                loc_score += get_points(closing_bracket)
+        scores.append(loc_score)
+        print()
+
+    print(Fore.RESET)
+
+    return sorted(scores)[int(len(scores)/2)]
+
 
 if __name__ == "__main__":
+    inp = get_input()
     output(
-        part1(get_input()),
-        part2()
+        part1(inp.copy()),
+        part2(inp.copy())
     )
