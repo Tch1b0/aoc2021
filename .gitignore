@@ -2,3 +2,4 @@ aoc
 aoc.dwarf
 aoc.exe
 __pycache__/
+.vscode
