@@ -1,5 +1,9 @@
 # aoc2021
 
+My solutions for the advent of code 2021.
+
+Read [my article](https://johannespour.de/projects/433381433) for further information about my attempt at the advent of code in 2021.
+
 ## Taskfile commands
 
 - `build` Builds the aoc-helper
